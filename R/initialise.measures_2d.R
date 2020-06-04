@@ -141,6 +141,12 @@ initialise.measures_2d<- function(knotDist,maxIterations,gap,radii,dists,explDat
     
     # numGot=length()
     
+    if (isS4(baseModel)) {
+      baseModel@splineParams[[1]]$initialKnots <- initialKnots
+    } else {
+      baseModel$splineParams[[1]]$initialKnots <- initialKnots
+    }
+    
   }else{
     numNeeded = nrow(initialKnots)
     knots2<-rbind(initialKnots, knotgrid)
@@ -294,7 +300,7 @@ initialise.measures_2d<- function(knotDist,maxIterations,gap,radii,dists,explDat
   
   if(fitnessMeasure=="CV"){
     if (isS4(baseModel)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      fitStat <- getCV_CReSS_2D(data, baseModel, dists,invInd[aR],radii,radiusIndices)
     } else {
       fitStat <- getCV_CReSS_2D(data, baseModel, dists,invInd[aR],radii,radiusIndices)
     }
@@ -329,7 +335,9 @@ initialise.measures_2d<- function(knotDist,maxIterations,gap,radii,dists,explDat
   
   if(fitnessMeasure=="cv.gamMRSea"){
     if (isS4(baseModel)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      set.seed(cv.opts$cv.gamMRSea.seed)
+      fitStat<-cv.gamMRSea(data, baseModel, K=cv.opts$K, cost=cv.opts$cost)$delta[2]
+      #fitStat<-Inf
     } else {
       set.seed(cv.opts$cv.gamMRSea.seed)
       fitStat<-cv.gamMRSea(data, baseModel, K=cv.opts$K, cost=cv.opts$cost)$delta[2]
@@ -680,7 +688,7 @@ initialise.measures_2d.mn<- function(knotDist,maxIterations,gap,radii,dists,expl
   
   if(fitnessMeasure=="CV"){
     if (isS4(baseModel)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      fitStat <- getCV_CReSS_2D(data, baseModel, dists,invInd[aR],radii,radiusIndices)
     } else {
       fitStat <- getCV_CReSS_2D(data, baseModel, dists,invInd[aR],radii,radiusIndices)
     }
@@ -715,7 +723,8 @@ initialise.measures_2d.mn<- function(knotDist,maxIterations,gap,radii,dists,expl
   
   if(fitnessMeasure=="cv.gamMRSea"){
     if (isS4(baseModel)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      fitStat<-cv.gamMRSea(data, baseModel, K=cv.opts$K, cost=cv.opts$cost)$delta[2]
+      # stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
     } else {
       set.seed(cv.opts$cv.gamMRSea.seed)
       fitStat<-cv.gamMRSea(data, baseModel, K=cv.opts$K, cost=cv.opts$cost)$delta[2]

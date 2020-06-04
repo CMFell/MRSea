@@ -44,6 +44,23 @@
   }
 
   tempFit <- get.measure_2d(fitnessMeasure, currentFit, currentModel,data, dists,aR,radii,radiusIndices, initDisp, cv.opts)$fitStat
+  
+  # check for convergence in vglm
+  # if (isS4(currentModel)){
+  #   max_it <- currentModel@control$maxit
+  #   current_it <- currentModel@iter
+  #   if (current_it == max_it) {
+  #     tempFit <- tempFit + 10000000
+  #   }
+  # }
+  
+  # if (isS4(currentModel)){
+  #   hde_check <- hdeff(currentModel)
+  #   if (sum(hde_check) > 0){
+  #     tempFit <- tempFit + 10000000
+  #   }
+  # }
+  
   if(tempFit <= (currentFit+10)){
     models[[length(models)+1]] = list(aR,radiusIndices, radii, tempFit)
   }
@@ -90,22 +107,18 @@
   if(basis=='exponential'){
     bspl<- "LRF.e(radiusIndices, dists, radii, aR)"  
   }
-  print(paste("lrf", bspl))
-  print(interactionTerm)
+
   if(is.null(interactionTerm)){
     test<-paste("update(baseModel, .  ~ . + ",bspl, ")",sep="")
-    print(test)
     currentModel<-eval(parse(text=test))
   }else{
     test<-paste("update(baseModel, .  ~  . + ",bspl, "*",interactionTerm, ")", sep="")
-    print(test)
     currentModel<-eval(parse(text=test))
   }
   
   tempFit <- get.measure_2d(fitnessMeasure, currentFit, currentModel,data, dists,aR,radii,radiusIndices, initDisp, cv.opts)$fitStat
   subMod <- fit.sub_model(currentModel, subselect, submodel, data, fitnessMeasure)
   tempStat <- subMod$subStat
-  print(paste(tempStat, tempFit, currentFit))
   if(tempFit + tempStat <= (currentFit+10)){
     models[[length(models)+1]] = list(aR,radiusIndices, radii, tempFit)
     submodels[[length(submodels)+1]] = list(tempStat)

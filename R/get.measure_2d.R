@@ -95,7 +95,7 @@ get.measure_2d<- function(fitnessMeasure,measures,out.lm, data, dists,aR,radii,r
   
   if(fitnessMeasure=="CV"){ 
     if (isS4(out.lm)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      fitStat <- getCV_CReSS_2D(data, out.lm, dists,aR,radii,radiusIndices)
     } else {
       fitStat <- getCV_CReSS_2D(data, out.lm, dists,aR,radii,radiusIndices)
     }
@@ -103,7 +103,8 @@ get.measure_2d<- function(fitnessMeasure,measures,out.lm, data, dists,aR,radii,r
   
   if(fitnessMeasure=="cv.gamMRSea"){
     if (isS4(out.lm)) {
-      stop('Fitness measure not supported for multinomial.  Please use AIC, AICc or BIC')
+      set.seed(cv.opts$cv.gamMRSea.seed)
+      fitStat <- cv.gamMRSea(data, out.lm, K=cv.opts$K, cost=cv.opts$cost)$delta[2]
     } else {
       set.seed(cv.opts$cv.gamMRSea.seed)
       fitStat <- cv.gamMRSea(data, out.lm, K=cv.opts$K, cost=cv.opts$cost)$delta[2]

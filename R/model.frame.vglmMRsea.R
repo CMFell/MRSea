@@ -10,6 +10,7 @@ model.frame.vglmMRSea <- function (formula, data = NULL, subset = NULL, na.actio
   if (!missing(formula) && nargs() == 1 && is.list(formula) && 
       all(c("terms", "call") %in% names(formula))) {
     fcall <- formula$call
+    print(fcall)
     m <- match(c("formula", "data", "subset", "weights", 
                  "na.action"), names(fcall), 0)
     fcall <- fcall[c(1, m)]

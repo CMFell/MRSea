@@ -115,7 +115,7 @@ runSALSA2Dmn<-function(model, salsa2dlist, d2k, k2k, datain, splineParams=NULL, 
     model <- as(model, "vglmMRSea")
     attributes(model@misc$formula)$.Environment<-environment()
     model@data <- data
-    # model<-make.vglmMRSea(model, vglmMRSea=TRUE)
+    model<-make.vglmMRSea(model, vglmMRSea=TRUE)
     if(class(model)[1]!='vglmMRSea'){model<-make.vglmMRSea(model, vglmMRSea=TRUE)}
   } else {
     attributes(model$formula)$.Environment<-environment()
@@ -132,8 +132,7 @@ runSALSA2Dmn<-function(model, salsa2dlist, d2k, k2k, datain, splineParams=NULL, 
       print('data is aggregated response is more than one column')
     }
   }
-  
-  
+
   # check for duplicates in knotgrid
   if(length(which(duplicated(salsa2dlist$knotgrid)==T))>0) stop ('knotgrid has duplicated locations in it. Please remove.')
   

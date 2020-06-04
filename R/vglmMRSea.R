@@ -6,7 +6,7 @@ vglmMRSea<-function(formula, family = stop("argument 'family' needs to be assign
                     model = FALSE, x.arg = TRUE, y.arg = TRUE, contrasts = NULL,
                     constraints = NULL, extra = list(), form2 = NULL,
                     qr.arg = TRUE, smart = TRUE, splineParams=NULL, ...) {
-  
+
   if(!is.null(splineParams)){
     dists<-splineParams[[1]]$dist
     aR<-splineParams[[1]]$knotPos
@@ -34,7 +34,8 @@ vglmMRSea<-function(formula, family = stop("argument 'family' needs to be assign
                "etastart", "mustart", "offset", "splineParams"), names(mf), 0)
   mf <- mf[c(1, m)]
   mf$drop.unused.levels <- TRUE
-  mf[[1]] <- as.name("model.frame.vglmMRSea")
+  # mf[[1]] <- as.name("model.frame.vglmMRSea")
+  mf[[1]] <- quote(MRSea::model.frame.vglmMRSea)
   mf <- eval(mf, envir=parent.frame())
   switch(method, model.frame.vglmMRSea = return(mf), vglm.fit = 1,
          stop("invalid 'method': ", method))
@@ -143,7 +144,8 @@ vglmMRSea<-function(formula, family = stop("argument 'family' needs to be assign
         "terms"        = list(terms = mt),
         "splineParams" = splineParams,
         "varshortnames"= varshortnames,
-        "panels"       = NULL)
+        "panels"       = NULL,
+        "y"            = fit$y)
   
   if (!smart) answer@smart.prediction <- list(smart.arg = FALSE)
   

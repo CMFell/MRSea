@@ -29,6 +29,7 @@ update.vglmMRSea <- function (object, formula., ..., evaluate = TRUE, panels=NUL
     newmodel@varshortnames<-object@varshortnames
     newmodel@splineParams<-object@splineParams
     newmodel@data <- data
+    newmodel@y <- object@y
     class(newmodel)<-class(object)
     newmodel
   }
