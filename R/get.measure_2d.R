@@ -138,6 +138,15 @@ get.measure_2d<- function(fitnessMeasure,measures,out.lm, data, dists,aR,radii,r
     }
   }
   
+  # calculate accuracy for vglm based multinomial
+  if(fitnessMeasure=="mn.accuracy"){ 
+    if (isS4(out.lm)) {
+      fitStat <- mn.accuracy(out.lm)
+    } else {
+      stop('Fitness measure only supported for multinomial with vglm')
+    }
+  }
+  
   # cat("Evaluating new fit: ", fitStat, "\n")
   if(is.na(fitStat)){
     fitStat <- tempMeasure + 10000000

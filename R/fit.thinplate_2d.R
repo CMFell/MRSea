@@ -5,7 +5,7 @@
 #'
 
 
-"fit.thinPlate_2d" <- function(fitnessMeasure, dists,aR,radii,baseModel,radiusIndices,models, currentFit, interactionTerm, data, initDisp, cv.opts, basis='gaussian') {
+"fit.thinPlate_2d" <- function(fitnessMeasure, dists,aR,radii,baseModel,radiusIndices,models, currentFit, interactionTerm, data, initDisp, cv.opts, basis='gaussian', hdetest) {
 
   if (isS4(baseModel)){
     attributes(baseModel@misc$formula)$.Environment<-environment()
@@ -54,12 +54,14 @@
   #   }
   # }
   
-  # if (isS4(currentModel)){
-  #   hde_check <- hdeff(currentModel)
-  #   if (sum(hde_check) > 0){
-  #     tempFit <- tempFit + 10000000
-  #   }
-  # }
+  if (hdetest){
+    if (isS4(currentModel)){
+      hde_check <- hdeff(currentModel)
+      if (sum(hde_check) > 0){
+        tempFit <- tempFit + 10000000
+      }
+    }
+  }
   
   if(tempFit <= (currentFit+10)){
     models[[length(models)+1]] = list(aR,radiusIndices, radii, tempFit)
