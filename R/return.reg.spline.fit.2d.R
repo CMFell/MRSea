@@ -193,8 +193,6 @@
       out.lm <- output$out.lm
       radiusIndices <- output$radiusIndices
       improveDrop <- output$improveDrop
-      
-      print("e")
 
       if (isS4(out.lm)) {
         out.lm@splineParams[[1]]$knotPos<-aR

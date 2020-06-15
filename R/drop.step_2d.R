@@ -73,7 +73,6 @@
 
 ### hierarchical model
 
-
 "drop.step_2d.hr" <- function(radii,invInd,dists,explData,response,knotgrid,maxIterations,fitnessMeasure,
                               point,knotPoint,position,aR,BIC,track,out.lm,improveDrop,minKnots,tol=0,baseModel,radiusIndices,models, interactionTerm, data, initDisp, cv.opts, basis, subselect, submodel, submodels) {
   
