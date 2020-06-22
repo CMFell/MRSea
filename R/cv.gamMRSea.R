@@ -139,7 +139,7 @@ cv.gamMRSea<-function (data, modelobject, cost = function(y, yhat) mean((y - yha
       }
     }
     
-    d.glm <- eval(Call)
+    d.glm <- eval.parent(Call)
     p.alpha <- n.s[i]/n
     if (isS4(modelobject)){
       cost.i <- cost_mn_accuracy(glm.y[j.out,], predict(object=d.glm, newdata=data[j.out, ,drop = FALSE], g2k=g2k, type = "response"))
